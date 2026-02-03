@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
-import { fetchUsers } from "../api/users";
+import { fetchUser } from "../api/users";
 
-export function useUsers() {
-  const [data, setData] = useState([]);
+export function useUser(id) {
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!id) return;
+
     const ac = new AbortController();
 
-    fetchUsers({ signal: ac.signal })
+    fetchUser({ id, signal: ac.signal })
       .then(setData)
       .catch((err) => {
         if (err.name !== "AbortError") setError(err);
       })
       .finally(() => setLoading(false));
+
     return () => ac.abort();
-  }, []);
+  }, [id]);
 
   return { data, loading, error };
 }

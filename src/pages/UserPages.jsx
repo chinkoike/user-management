@@ -22,6 +22,7 @@ export default function UsersPage() {
         u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q),
     );
   }, [search, localUsers]);
+
   function handleView(id) {
     navigate(`/users/${id}`);
   }
